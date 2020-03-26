@@ -12,6 +12,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(routes)
 
 
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static("client"));
+}
+
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/angularWeatherApp", { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 
 
