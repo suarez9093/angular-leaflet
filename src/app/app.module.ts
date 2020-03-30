@@ -1,13 +1,20 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./header/header.component";
 import { LeafletComponent } from "./leaflet/leaflet.component";
+import { ConfigComponent } from "./config/config.component";
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, LeafletComponent],
-  imports: [BrowserModule],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    LeafletComponent,
+    ConfigComponent
+  ],
+  imports: [BrowserModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent]
 })
