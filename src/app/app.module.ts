@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./header/header.component";
-import { LeafletComponent } from './leaflet/leaflet.component';
+import { LeafletComponent } from "./leaflet/leaflet.component";
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LeafletComponent],
