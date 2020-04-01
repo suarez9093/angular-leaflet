@@ -1,22 +1,41 @@
 import { Injectable } from "@angular/core";
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpResponse
-} from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { catchError, retry } from "rxjs/operators";
-
-export interface Config {
-  weatherUrl: string;
-}
+import { HttpClient } from "@angular/common/http";
+// import "rxjs/add/operator/toPromise";
 
 @Injectable()
 export class ConfigService {
-  configUrl = "./assets/config.json";
   constructor(private http: HttpClient) {}
+  // sampleObservable = () => {
+  //   this.http.get(
+  //     "https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=2bbbf8e95178ddb66341a6d463360ced"
+  //   );
+  // };
+  samplePromise = () => {
+    this.http
+      .get(
+        "https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=2bbbf8e95178ddb66341a6d463360ced"
+      )
+      .toPromise();
+  };
 
-  getConfig() {
-    return this.http.get(this.configUrl);
-  }
+  // usingObservable = () => {
+  //   this.sampleObservable().subscribe(
+  //     result => {
+  //       console.log(result);
+  //     },
+  //     error => {
+  //       console.log(error);
+  //     }
+  //   );
+  // };
+  // usingPromise = () => {
+  //   this.samplePromise().then(
+  //     result => {
+  //       console.log(result);
+  //     },
+  //     error => {
+  //       console.log(error);
+  //     }
+  //   );
+  // };
 }
