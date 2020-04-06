@@ -12,8 +12,9 @@ declare let L;
   styleUrls: ["./leaflet.component.css"],
 })
 export class LeafletComponent implements OnInit {
-  randomNumber: number;
-  searchQuery: string;
+  collecitonOfCoordinates = [];
+  coordinates = [0, 0];
+  searchQuery: number;
   searchResults: WeatherSearch;
   constructor(
     private WeatherSearchService: WeatherSearchService,
@@ -65,10 +66,9 @@ export class LeafletComponent implements OnInit {
       (error) => console.log(error)
     );
     //
-    this.RandomNumberSerive.generateRandom(1).then(
+    this.RandomNumberSerive.generateCoordinates(1).then(
       (response) => {
-        console.log("response: ", response.result.random.data[0]);
-        this.randomNumber = response.result.random.data[0];
+        console.log("lat: ", response.result.random.data);
       },
       (error) => console.log(error)
     );
@@ -76,12 +76,21 @@ export class LeafletComponent implements OnInit {
     //
   }
   searchWeather = () => {
-    this.WeatherSearchService.searchWeather(this.searchQuery).then(
+    this.WeatherSearchService.searchWeather("london").then(
       (response) => {
         this.searchResults = response;
         console.log(this.searchResults);
       },
       (error) => console.log(error.statusBack)
+    );
+  };
+
+  generateWeatherPoints = () => {
+    this.RandomNumberSerive.generateCoordinates(this.searchQuery).then(
+      (response) => {
+        console.log("weather Point: ", response.result.random.data);
+      },
+      (error) => console.log(error)
     );
   };
 }

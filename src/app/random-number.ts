@@ -2,7 +2,7 @@ export interface RandomNumber {
   jsonrpc: string;
   result: {
     random: {
-      data: number;
+      data: Array<[]>;
       completionTime: string;
     };
     bitsUsed: number;
