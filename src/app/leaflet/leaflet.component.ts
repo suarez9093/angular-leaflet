@@ -1,32 +1,19 @@
 import { Component, OnInit } from "@angular/core";
+import { WeatherSearchService } from "../weather-search.service";
+import { WeatherSearch } from "../weather-search";
 declare let L;
 
 @Component({
   selector: "app-leaflet",
   templateUrl: "./leaflet.component.html",
-  styleUrls: ["./leaflet.component.css"]
+  styleUrls: ["./leaflet.component.css"],
 })
 export class LeafletComponent implements OnInit {
-  constructor() {}
+  searchResults: WeatherSearch;
+  constructor(private WeatherSearchService: WeatherSearchService) {}
 
   ngOnInit() {
-    const mymap = L.map("mapid").setView([51.505, -0.09], 13);
-    var marker = L.marker([51.5, -0.09]).addTo(mymap);
-    // var circle = L.circle([51.508, -0.11], {
-    //   color: "red",
-    //   fillColor: "#f03",
-    //   fillOpacity: 0.5,
-    //   radius: 500
-    // }).addTo(mymap);
-    // var polygon = L.polygon([
-    //   [51.509, -0.08],
-    //   [51.503, -0.06],
-    //   [51.51, -0.047]
-    // ]).addTo(mymap);
-
-    marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-    // circle.bindPopup("I am a circle.");
-    // polygon.bindPopup("I am a polygon.");
+    const mymap = L.map("mapid").setView([51.505, -0.09], 2);
 
     var popup = L.popup();
 
@@ -49,8 +36,33 @@ export class LeafletComponent implements OnInit {
         tileSize: 512,
         zoomOffset: -1,
         accessToken:
-          "pk.eyJ1Ijoic3VhcmV6OTA5MyIsImEiOiJjazdtbXk4Y2Uwa2FlM2xucjNocHdwOTR6In0.Idg85NpqSu9BGnw9FktCIQ"
+          "pk.eyJ1Ijoic3VhcmV6OTA5MyIsImEiOiJjazdtbXk4Y2Uwa2FlM2xucjNocHdwOTR6In0.Idg85NpqSu9BGnw9FktCIQ",
       }
     ).addTo(mymap);
+
+    this.WeatherSearchService.searchWeather("colorado").then(
+      (response) => {
+        this.searchResults = response;
+        console.log("searchResults: ", this.searchResults);
+        var circle = L.circle(
+          [this.searchResults.coord.lat, this.searchResults.coord.lon],
+          {
+            color: "red",
+            fillColor: "#f03",
+            fillOpacity: 0.5,
+            radius: 50000,
+          }
+        ).addTo(mymap);
+      },
+      (error) => console.log(error)
+    );
   }
+  searchWeather = (query: string) => {
+    this.WeatherSearchService.searchWeather(query).then(
+      (response) => {
+        this.searchResults = response;
+      },
+      (error) => console.log(error.statusBack)
+    );
+  };
 }

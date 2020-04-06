@@ -1,5 +1,4 @@
 const request = require('request')
-
 module.exports = {
     /*
     ** This method returns a promise

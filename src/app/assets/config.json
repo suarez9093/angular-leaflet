@@ -1,0 +1,4 @@
+{
+  "weatherUrl": "https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=2bbbf8e95178ddb66341a6d463360ced",
+  "textfile": "assets/textfile.txt"
+}
