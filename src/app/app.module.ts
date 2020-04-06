@@ -8,6 +8,7 @@ import { HeaderComponent } from "./header/header.component";
 import { LeafletComponent } from "./leaflet/leaflet.component";
 import { WeatherSearchService } from "./weather-search.service";
 import { WeatherDetailComponent } from "./weather-detail/weather-detail.component";
+import { RandomNumberService } from "./random-number.service";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { WeatherDetailComponent } from "./weather-detail/weather-detail.componen
     WeatherDetailComponent,
   ],
   imports: [BrowserModule, HttpClientModule, FormsModule],
-  providers: [WeatherSearchService],
+  providers: [WeatherSearchService, RandomNumberService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

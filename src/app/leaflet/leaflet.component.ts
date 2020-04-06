@@ -1,6 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnChanges } from "@angular/core";
 import { WeatherSearchService } from "../weather-search.service";
 import { WeatherSearch } from "../weather-search";
+import { RandomNumberService } from "../random-number.service";
+import { RandomNumber } from "../random-number";
+
 declare let L;
 
 @Component({
@@ -9,9 +12,13 @@ declare let L;
   styleUrls: ["./leaflet.component.css"],
 })
 export class LeafletComponent implements OnInit {
+  randomNumber: number;
   searchQuery: string;
   searchResults: WeatherSearch;
-  constructor(private WeatherSearchService: WeatherSearchService) {}
+  constructor(
+    private WeatherSearchService: WeatherSearchService,
+    private RandomNumberSerive: RandomNumberService
+  ) {}
 
   ngOnInit() {
     let mymap = L.map("mapid").setView([51.505, -0.09], 2);
@@ -41,7 +48,7 @@ export class LeafletComponent implements OnInit {
       }
     ).addTo(mymap);
 
-    this.WeatherSearchService.searchWeather(this.searchQuery).then(
+    this.WeatherSearchService.searchWeather("london").then(
       (response) => {
         this.searchResults = response;
         console.log("searchResults: ", this.searchResults);
@@ -57,6 +64,16 @@ export class LeafletComponent implements OnInit {
       },
       (error) => console.log(error)
     );
+    //
+    this.RandomNumberSerive.generateRandom(1).then(
+      (response) => {
+        console.log("response: ", response.result.random.data[0]);
+        this.randomNumber = response.result.random.data[0];
+      },
+      (error) => console.log(error)
+    );
+
+    //
   }
   searchWeather = () => {
     this.WeatherSearchService.searchWeather(this.searchQuery).then(
