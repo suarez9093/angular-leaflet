@@ -9,11 +9,12 @@ declare let L;
   styleUrls: ["./leaflet.component.css"],
 })
 export class LeafletComponent implements OnInit {
+  searchQuery: string;
   searchResults: WeatherSearch;
   constructor(private WeatherSearchService: WeatherSearchService) {}
 
   ngOnInit() {
-    const mymap = L.map("mapid").setView([51.505, -0.09], 2);
+    let mymap = L.map("mapid").setView([51.505, -0.09], 2);
 
     var popup = L.popup();
 
@@ -40,7 +41,7 @@ export class LeafletComponent implements OnInit {
       }
     ).addTo(mymap);
 
-    this.WeatherSearchService.searchWeather("colorado").then(
+    this.WeatherSearchService.searchWeather(this.searchQuery).then(
       (response) => {
         this.searchResults = response;
         console.log("searchResults: ", this.searchResults);
@@ -57,10 +58,11 @@ export class LeafletComponent implements OnInit {
       (error) => console.log(error)
     );
   }
-  searchWeather = (query: string) => {
-    this.WeatherSearchService.searchWeather(query).then(
+  searchWeather = () => {
+    this.WeatherSearchService.searchWeather(this.searchQuery).then(
       (response) => {
         this.searchResults = response;
+        console.log(this.searchResults);
       },
       (error) => console.log(error.statusBack)
     );
