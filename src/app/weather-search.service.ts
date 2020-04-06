@@ -19,7 +19,7 @@ export class WeatherSearchService {
       } else {
         this.http
           .get(
-            `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=`
+            `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=fe3985bc44d386b1f20d37b6e0b4e4a9`
           )
           .toPromise()
           .then(
