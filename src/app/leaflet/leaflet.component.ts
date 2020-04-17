@@ -104,14 +104,24 @@ export class LeafletComponent implements OnInit {
       },
       error => console.log(error)
     );
+    this.addMapMarker();
   };
 
   addMapMarker = () => {
-    var circle = L.circle([52, -11], {
-      color: "red",
-      fillColor: "#f03",
-      fillOpacity: 0.5,
-      radius: 50000
-    }).addTo(this.mymap);
+    for (let i = 0; i < this.coordinates.length; i++) {
+      console.log("this.coordinates[i]: ", this.coordinates[i]);
+      var circle = L.circle([this.coordinates[i][0], this.coordinates[i][1]], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: 50000
+      }).addTo(this.mymap);
+    }
+    // var circle = L.circle([52, -11], {
+    //   color: "red",
+    //   fillColor: "#f03",
+    //   fillOpacity: 0.5,
+    //   radius: 50000
+    // }).addTo(this.mymap);
   };
 }
