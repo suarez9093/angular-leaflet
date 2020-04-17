@@ -17,25 +17,13 @@ export class LeafletComponent implements OnInit {
   searchQuery: number;
   searchResults: WeatherSearch;
   mymap;
+  circle;
 
   constructor(
     private WeatherSearchService: WeatherSearchService,
     private RandomNumberSerive: RandomNumberService
   ) {}
 
-  ngOnChanges(changes: any) {
-    // console.log("changes: ", changes["mymap"]);
-    // for (let i = 0; i < this.coordinates.length; i++) {
-    //   console.log("i: ", i);
-    //   console.log("coordinates for map: ", this.coordinates[i]);
-    //   var circle = L.circle([this.coordinates[i][0], this.coordinates[i][1]], {
-    //     color: "red",
-    //     fillColor: "#f03",
-    //     fillOpacity: 0.5,
-    //     radius: 50000
-    //   }).addTo(this.mymap);
-    // }
-  }
   ngOnInit() {
     this.mymap = L.map("mapid").setView(this.currentCoordinates, 2);
 
@@ -109,7 +97,8 @@ export class LeafletComponent implements OnInit {
 
   addMapMarker = () => {
     for (let i = 0; i < this.coordinates.length; i++) {
-      console.log("this.coordinates[i]: ", this.coordinates[i]);
+      console.log("this.coordinates[i][0]: ", this.coordinates[i][0]);
+      console.log("this.coordinates[i][1]: ", this.coordinates[i][1]);
       var circle = L.circle([this.coordinates[i][0], this.coordinates[i][1]], {
         color: "red",
         fillColor: "#f03",
@@ -117,11 +106,5 @@ export class LeafletComponent implements OnInit {
         radius: 50000
       }).addTo(this.mymap);
     }
-    // var circle = L.circle([52, -11], {
-    //   color: "red",
-    //   fillColor: "#f03",
-    //   fillOpacity: 0.5,
-    //   radius: 50000
-    // }).addTo(this.mymap);
   };
 }
