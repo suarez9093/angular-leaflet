@@ -12,12 +12,20 @@ declare let L;
   styleUrls: ["./leaflet.component.css"]
 })
 export class LeafletComponent implements OnInit {
+  // Current coordinates that map defaults to on load
   public currentCoordinates = [51.505, -0.09];
+  // array to store all of the queries from the api call
   coordinates = [];
+  // how many random api calls to generate
   searchQuery: number;
+  // the results are going to take the structure of the WeatherSearch interface
   searchResults: WeatherSearch;
+  // Setting the variable for the map
   mymap;
+  // Setting the variable for the circules
   circle;
+  // setting a variable for the pop ups
+  popup = L.popup();
 
   constructor(
     private WeatherSearchService: WeatherSearchService,
@@ -25,10 +33,11 @@ export class LeafletComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // initilizing the map to specific coordinates and a zoom
     this.mymap = L.map("mapid").setView(this.currentCoordinates, 2);
 
-    var popup = L.popup();
-
+    // Leaflet code for generating map
+    // ====================================================
     L.tileLayer(
       "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
       {
@@ -42,57 +51,42 @@ export class LeafletComponent implements OnInit {
           "pk.eyJ1Ijoic3VhcmV6OTA5MyIsImEiOiJjazdtbXk4Y2Uwa2FlM2xucjNocHdwOTR6In0.Idg85NpqSu9BGnw9FktCIQ"
       }
     ).addTo(this.mymap);
-
-    this.WeatherSearchService.searchWeather("london").then(
-      response => {
-        this.searchResults = response;
-        console.log("searchResults: ", this.searchResults);
-        var circle = L.circle(
-          [this.searchResults.coord.lat, this.searchResults.coord.lon],
-          {
-            color: "red",
-            fillColor: "#f03",
-            fillOpacity: 0.5,
-            radius: 50000
-          }
-        ).addTo(this.mymap);
-      },
-      error => console.log(error)
-    );
-
-    this.RandomNumberSerive.generateCoordinates(1).then(
-      response => {
-        console.log("lat: ", response.result.random.data);
-      },
-      error => console.log(error)
-    );
+    // ====================================================
   }
 
   // Functions
   // ========================================================
-  searchWeather = () => {
-    this.WeatherSearchService.searchWeather("london").then(
+
+  //
+  searchWeather = (lat, lon) => {
+    this.WeatherSearchService.searchWeather(lat, lon).then(
       response => {
         this.searchResults = response;
-        console.log(this.searchResults);
+        console.log("search Results: ", this.searchResults);
       },
-      error => console.log(error.statusBack)
+      error => console.log("Error: ", error.statusBack)
     );
   };
 
   generateWeatherPoints = () => {
     this.RandomNumberSerive.generateCoordinates(this.searchQuery).then(
       response => {
-        const points = response.result.random.data;
-        console.log("weather Point: ", points);
+        let points = response.result.random.data;
+        console.log("points: ", points);
         for (let i = 0; i < points.length; i++) {
-          this.coordinates.push(points[i]);
+          // this.coordinates.push(points[i]);
+          var circle = L.circle([points[i][0], points[i][1]], {
+            color: "red",
+            fillColor: "#f03",
+            fillOpacity: 0.5,
+            radius: 50000
+          }).addTo(this.mymap);
         }
-        console.log("coordinates: ", this.coordinates);
+        console.log("Random coordinates: ", this.coordinates);
       },
       error => console.log(error)
     );
-    this.addMapMarker();
+    // this.addMapMarker();
   };
 
   addMapMarker = () => {
@@ -107,4 +101,13 @@ export class LeafletComponent implements OnInit {
       }).addTo(this.mymap);
     }
   };
+
+  onMapClick = e => {
+    this.popup
+      .setLatLng(e.latlng)
+      .setContent("You clicked the map at " + e.latlng.toString())
+      .openOn(this.mymap);
+  };
+
+  // =======================================================================
 }
