@@ -71,35 +71,23 @@ export class LeafletComponent implements OnInit {
   generateWeatherPoints = () => {
     this.RandomNumberSerive.generateCoordinates(this.searchQuery).then(
       response => {
-        let points = response.result.random.data;
+        let points: number[][] = response.result.random.data;
         console.log("points: ", points);
         for (let i = 0; i < points.length; i++) {
-          // this.coordinates.push(points[i]);
           var circle = L.circle([points[i][0], points[i][1]], {
             color: "red",
             fillColor: "#f03",
             fillOpacity: 0.5,
             radius: 50000
           }).addTo(this.mymap);
+
+          this.searchWeather(points[i][0], points[i][1]);
         }
         console.log("Random coordinates: ", this.coordinates);
       },
       error => console.log(error)
     );
     // this.addMapMarker();
-  };
-
-  addMapMarker = () => {
-    for (let i = 0; i < this.coordinates.length; i++) {
-      console.log("this.coordinates[i][0]: ", this.coordinates[i][0]);
-      console.log("this.coordinates[i][1]: ", this.coordinates[i][1]);
-      var circle = L.circle([this.coordinates[i][0], this.coordinates[i][1]], {
-        color: "red",
-        fillColor: "#f03",
-        fillOpacity: 0.5,
-        radius: 50000
-      }).addTo(this.mymap);
-    }
   };
 
   onMapClick = e => {
